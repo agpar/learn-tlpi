@@ -2,7 +2,7 @@
 
 The files API is the common API for reading/writing to any kind of device in Unix. All I/O is done through this interface (even to sockets, pipes, terminals).
 
-All system calls on files refer to a file decsriptor (int). One the kernel opens a file for a process, it returns an int. The process can then use that int to refer to the opened file.
+All system calls on files refer to a file descriptor (int). One the kernel opens a file for a process, it returns an int. The process can then use that int to refer to the opened file.
 
 Most programs expect that they will have three files opened for them automatically on startup: [0, 1, 2], referring to stdin, stout and stderr.
 
@@ -23,8 +23,8 @@ These four functions apply in all I/O cases.
 
 Notes: 
 
-* `read` is for genirically reading bytes (not specifically text), so do not expect the buffer it fills to be null terminated.
-* `write` may be buffered by the kernel, so a succesful call does NOT guarantee that information has persisted to disk.
+* `read` is for generically reading bytes (not specifically text), so do not expect the buffer it fills to be null terminated.
+* `write` may be buffered by the kernel, so a successful call does NOT guarantee that information has persisted to disk.
 * `close` should be used explicitly and checked for errors. For instance, closing a file descriptor twice is a bad bug (and you need to check for it).
 
 
@@ -48,4 +48,4 @@ Notes:
 
 ## ioctl
 
-There is a special and very generic functoin `ioctl` which does everything that does not fit into the 5 operators above.
+There is a special and very generic function `ioctl` which does everything that does not fit into the 5 operators above.

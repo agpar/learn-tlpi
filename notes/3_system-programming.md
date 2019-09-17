@@ -1,7 +1,7 @@
 # 3 System Programming Concepts
 
 
-System calls allow user-space applications to request the kernel to perform priviledged tasks.
+System calls allow user-space applications to request the kernel to perform privileged tasks.
 
 All system calls have overhead, since the CPU must switch modes and transfer data between user-space and kernel-space.
 
