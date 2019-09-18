@@ -17,42 +17,44 @@ int parse_opt(int argc, char *argv[]) {
                 OPT_APPEND = 1;
                 break;
             default:
-                usageErr("Unknown opt %c", c);
+                usageErr("Unknown opt!");
         }
     return optind;
 }
 
-// TODO break this up into small procedures.
-//
-int main(int argc, char* argv[]) {
-    int *fds;
-    int fd, i, openFlags;
-    mode_t filePerms;
-    ssize_t numRead;
-    char buf[BUF_SIZE];
-
-    if (argc > 1 && strcmp(argv[1], "--help") == 0)
-        usageErr("%s [out-file]...", argv[0]);
-
-    int fileInd = parse_opt(argc, argv);
-    char **fileNames = &argv[fileInd];
-
-    // Open all the files given as input.
-    fds = malloc(sizeof(int *) * (argc -1));
-    openFlags = O_CREAT | O_WRONLY;
+int *open_files(char **fileNames, int fileCount) {
+    int *fds = malloc(fileCount);
+    int openFlags = O_CREAT | O_WRONLY;
+    
     if (!OPT_APPEND)
         openFlags = openFlags | O_TRUNC;
 
-    filePerms = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP |
+    mode_t filePerms = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP |
                 S_IROTH | S_IWOTH; /* rw-rw-rw- */
 
-    for (i = 0; i < argc - fileInd; i++) {
+    int fd;
+    for (int i = 0; i < fileCount; i++) {
         if((fd = open(fileNames[i], openFlags, filePerms)) == -1)
             errExit("open %s", fileNames[i]);
         if(OPT_APPEND)
             lseek(fd, 0, SEEK_END);
         fds[i] = fd;
     }
+    return fds;
+}
+
+int main(int argc, char* argv[]) {
+    int i;
+    ssize_t numRead;
+    char buf[BUF_SIZE];
+
+    if (argc > 1 && strcmp(argv[1], "--help") == 0)
+        usageErr("%s [out-file]...", argv[0]);
+
+    // Open all the files given as input
+    int fileInd = parse_opt(argc, argv);
+    char **fileNames = &argv[fileInd];
+    int *fds = open_files(fileNames, argc - fileInd);
 
     while((numRead = read(STDIN_FILENO, buf, BUF_SIZE)) > 0) {
         for (i = 0; i < argc - fileInd; i++) {
