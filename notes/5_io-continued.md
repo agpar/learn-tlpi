@@ -98,3 +98,8 @@ This is mostly useful in the shell, as some commands expect files as input and d
 
 Aliases for 0,1,2 also exist at `/dev/stdin`, `/dev/stdout`, `/dev/stderr`.
 
+## Temporary files
+
+It is often useful to create a file that will only exist as long as the process that creates it.
+
+`int mkstemp(char *template)` expects `template` to be a path where the last 6 characters are 'XXXXXX'. It modifies `template`, replacing the 6 X's, so that the path would refer to a unique non-existing file. The function returns an open file descriptor to the file now pointed to by `template`.
