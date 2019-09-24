@@ -25,7 +25,7 @@ int msetenv(char *name, char *value, int overwrite) {
     int nameLen = strlen(name);
     int valueLen = strlen(value);
     int newLen = nameLen + valueLen + 2;
-    if(-1 == (newStr = malloc(newLen)))
+    if(NULL == (newStr = malloc(newLen)))
         return -1;
 
     strncpy(newStr, name, nameLen);
