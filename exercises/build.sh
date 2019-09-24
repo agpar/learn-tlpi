@@ -11,4 +11,4 @@ else
     OUT=a.out
 fi
 
-gcc $1 $LIB_DIR/error_functions.o $LIB_DIR/get_num.o -Wall -I$LIB_DIR -o $OUT
+gcc $1 $LIB_DIR/error_functions.o $LIB_DIR/get_num.o -g -Wall -I$LIB_DIR -o $OUT
